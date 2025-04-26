@@ -12,6 +12,7 @@ import { provideTacticalFeedback } from "@/ai/flows/provide-tactical-feedback";
 import { generateVolleyballSituation, GenerateVolleyballSituationOutput } from "@/ai/flows/generate-volleyball-situation";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+<<<<<<< HEAD
 
 const GameSimulation = () => {
   const [situation, setSituation] = useState<GenerateVolleyballSituationOutput | null>(null);
@@ -151,6 +152,8 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
 import { provideTacticalFeedback } from "@/ai/flows/provide-tactical-feedback";
 import { generateVolleyballSituation, GenerateVolleyballSituationOutput } from "@/ai/flows/generate-volleyball-situation";
+=======
+>>>>>>> 050f203 (se puede dar un informe final con iq voley que se pueda descargar en pdf?)
 
 const GameSimulation = () => {
   const [situation, setSituation] = useState<GenerateVolleyballSituationOutput | null>(null);
@@ -243,6 +246,22 @@ const GameSimulation = () => {
     }
   };
 
+  const generatePDFReport = () => {
+    const doc = new jsPDF();
+
+    doc.text("Informe Final - Leyendo el Voley", 10, 10);
+    doc.text(`Puntaje de IQ de Voley: ${calculateVolleyballIQ()}`, 10, 20);
+    doc.text(`Preguntas Correctas: ${correctCount} / ${totalQuestions}`, 10, 30);
+
+    doc.save("informe_leyendo_el_voley.pdf");
+  };
+
+  const calculateVolleyballIQ = () => {
+    // Calcular el IQ de Voley basado en el porcentaje de respuestas correctas
+    const percentageCorrect = (correctCount / totalQuestions) * 100;
+    return Math.round(percentageCorrect);
+  };
+
   if (isLoading) {
     return <div>Cargando situación...</div>;
   }
@@ -284,9 +303,12 @@ const GameSimulation = () => {
             Descargar Informe Final
           </Button>
         )}
+<<<<<<< HEAD
 =======
         <Button onClick={handleNextSituation} className="mt-4">Siguiente Jugada</Button>
 >>>>>>> 3fe51ad (Update app)
+=======
+>>>>>>> 050f203 (se puede dar un informe final con iq voley que se pueda descargar en pdf?)
       </CardContent>
     </Card>
   );
