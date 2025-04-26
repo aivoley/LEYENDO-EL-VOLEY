@@ -15,7 +15,7 @@ const SituationType = z.enum(['ofensiva', 'defensiva']);
 
 const GenerateVolleyballSituationInputSchema = z.object({
   situationType: SituationType.describe('El tipo de situación de voleibol a generar (ofensiva o defensiva).'),
-  questionCount: z.number().min(1).max(20).default(3).describe('El número de preguntas a generar.'),
+  questionCount: z.number().min(3).max(20).default(4).describe('El número de preguntas a generar.'),
 });
 export type GenerateVolleyballSituationInput = z.infer<typeof GenerateVolleyballSituationInputSchema>;
 
@@ -38,14 +38,13 @@ const generateVolleyballSituationPrompt = ai.definePrompt({
   output: {
     schema: GenerateVolleyballSituationOutputSchema,
   },
-  prompt: `Sos un entrenador de voley argentino que crea situaciones de juego para que los jugadores practiquen su toma de decisiones.
+  prompt: `Sos un entrenador de voley argentino que crea situaciones de juego desafiantes para que los jugadores practiquen su toma de decisiones.
 
-Generá una situación de voley desafiante del siguiente tipo: {{{situationType}}}.
+Generá una situación de voley del siguiente tipo: {{{situationType}}}.
 
-La situación debe incluir una descripción de las posiciones de los jugadores, la posición de la pelota y la disposición del equipo contrario.
-La descripción debe ser concisa, pero informativa, para que el jugador pueda tomar una decisión informada.
-Proporcioná una acción correcta y {{{questionCount}}} acciones incorrectas para el jugador.
-Utilizá términos y expresiones comunes en el voley argentino. No seas repetitivo con las opciones incorrectas, y hacelas creibles.
+La situación debe incluir una descripción clara y concisa de las posiciones de los jugadores, la ubicación de la pelota y la disposición del equipo contrario, permitiendo al jugador tomar una decisión informada.
+Proporcioná una única acción correcta y {{{questionCount}}} acciones incorrectas para la situación.
+Usá términos y expresiones comunes en el voley argentino, evitando la repetición en las opciones incorrectas y asegurando que sean creíbles y lógicas dentro del contexto del juego.
 Asegurate de que solo haya una opcion correcta.
 
 Formato de salida:

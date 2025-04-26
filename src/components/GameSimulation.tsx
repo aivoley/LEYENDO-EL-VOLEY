@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
-import { cn } from "@/lib/utils"
 import { provideTacticalFeedback } from "@/ai/flows/provide-tactical-feedback";
 import { generateVolleyballSituation, GenerateVolleyballSituationOutput } from "@/ai/flows/generate-volleyball-situation";
 
@@ -16,58 +15,75 @@ const GameSimulation = () => {
   const [feedback, setFeedback] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const { toast } = useToast();
 
-  const { toast } = useToast()
+  const generateNewSituation = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva" });
+      setSituation(newSituation);
+      if (newSituation) {
+        const allOptions = [newSituation.correctOption, ...newSituation.incorrectOptions].sort(() => Math.random() - 0.5);
+        setOptions(allOptions);
+        setCorrectOption(newSituation.correctOption);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "¡Ups! Parece que hubo un problema al generar la situación. Intenta de nuevo más tarde."
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast]);
 
   useEffect(() => {
     generateNewSituation();
-  }, []);
-
-  const generateNewSituation = async () => {
-    const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva", questionCount: 20 });
-
-    setSituation(newSituation);
-    if (newSituation) {
-      const allOptions = [newSituation.correctOption, ...newSituation.incorrectOptions].sort(() => Math.random() - 0.5);
-      setOptions(allOptions);
-      setCorrectOption(newSituation.correctOption);
-    }
-  };
+  }, [generateNewSituation]);
 
   const handleOptionSelect = async (option: string) => {
-    let isCorrect = option === correctOption;
+    if (!situation) return;
+
+    const isCorrect = option === correctOption;
+    let title: string, description: string, variant: "default" | "destructive";
+
     if (isCorrect) {
-      setFeedback("¡Correcto, che!");
-      setCorrectCount(correctCount + 1);
-      toast({
-        title: '¡Correcto, che!',
-        description: '¡Bien ahí!',
-      });
+      title = "¡Correcto, che!";
+      description = "¡Bien ahí!";
+      variant = "default";
+      setCorrectCount(prevCount => prevCount + 1);
     } else {
-      setFeedback("¡Incorrecto, loco! ¡Intenta de nuevo!");
-      setIncorrectCount(incorrectCount + 1);
-      toast({
-        variant: "destructive",
-        title: "¡Lástima, che!",
-        description: "¡Dale, intenta de nuevo, vos podés!"
-      });
+      title = "¡Incorrecto, loco!";
+      description = "¡Dale, intenta de nuevo, vos podés!";
+      variant = "destructive";
+      setIncorrectCount(prevCount => prevCount + 1);
     }
 
-    if (situation) {
+    toast({ title, description, variant });
+
+    try {
       const tacticalFeedback = await provideTacticalFeedback({ gameSituation: situation.description, chosenAction: option });
       setFeedback(tacticalFeedback.feedback);
+    } catch (error) {
+      setFeedback("No se pudo obtener feedback táctico en este momento.");
     }
     router.refresh();
   };
 
-  const handleNextSituation = async () => {
-    await generateNewSituation();
+  const handleNextSituation = () => {
+    generateNewSituation();
     setFeedback("");
   };
 
-  if (!situation) {
+  if (isLoading) {
     return <div>Cargando situación...</div>;
+  }
+
+  if (!situation) {
+    return <div>Error al cargar la situación.</div>;
   }
 
   return (
