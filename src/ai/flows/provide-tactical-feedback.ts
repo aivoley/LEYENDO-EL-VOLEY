@@ -11,13 +11,22 @@ import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
 
 const ProvideTacticalFeedbackInputSchema = z.object({
+<<<<<<< HEAD
   gameSituation: z.string().describe('Descripción de la situación del juego, incluyendo las posiciones de las jugadoras, la posición de la pelota y la disposición del equipo contrario.'),
   chosenAction: z.string().describe('La acción elegida por la jugadora (ej., ataque, bloqueo, pase).'),
+=======
+  gameSituation: z.string().describe('Description of the game situation, including player positions, ball position, and opposing team arrangement.'),
+  chosenAction: z.string().describe('The action chosen by the player (e.g., attack, block, pass).'),
+>>>>>>> 3fe51ad (Update app)
 });
 export type ProvideTacticalFeedbackInput = z.infer<typeof ProvideTacticalFeedbackInputSchema>;
 
 const ProvideTacticalFeedbackOutputSchema = z.object({
+<<<<<<< HEAD
   feedback: z.string().describe('Feedback táctico sobre la acción elegida, considerando la situación del juego.'),
+=======
+  feedback: z.string().describe('Tactical feedback on the chosen action, considering the game situation.'),
+>>>>>>> 3fe51ad (Update app)
 });
 export type ProvideTacticalFeedbackOutput = z.infer<typeof ProvideTacticalFeedbackOutputSchema>;
 
@@ -33,6 +42,7 @@ const provideTacticalFeedbackPrompt = ai.definePrompt({
   output: {
     schema: ProvideTacticalFeedbackOutputSchema,
   },
+<<<<<<< HEAD
   prompt: `Sos una entrenadora de voleibol que proporciona feedback táctico a una jugadora.
 
 Dada la siguiente situación de juego y la acción elegida por la jugadora, proporciona feedback táctico sobre la decisión.
@@ -40,6 +50,14 @@ Utiliza términos y expresiones comunes en el voleibol latinoamericano.
 
 Situación de Juego: {{{gameSituation}}}
 Acción Elegida: {{{chosenAction}}}
+=======
+  prompt: `You are a volleyball coach providing tactical feedback to a player.
+
+Given the following game situation and the player's chosen action, provide tactical feedback on the decision.
+
+Game Situation: {{{gameSituation}}}
+Chosen Action: {{{chosenAction}}}
+>>>>>>> 3fe51ad (Update app)
 
 Feedback:
 `,
