@@ -12,18 +12,18 @@ import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
 
 const GenerateVolleyballSituationInputSchema = z.object({
-  situationType: z.enum(['ofensiva', 'defensiva']).describe('The type of volleyball situation to generate (ofensiva or defensiva).'),
+  situationType: z.enum(['ofensiva', 'defensiva']).describe('El tipo de situación de voleibol a generar (ofensiva o defensiva).'),
 });
 export type GenerateVolleyballSituationInput = z.infer<typeof GenerateVolleyballSituationInputSchema>;
 
 const GenerateVolleyballSituationOutputSchema = z.object({
-  description: z.string().describe('A description of the volleyball game situation.'),
+  description: z.string().describe('Una descripción de la situación del juego de voleibol.'),
   options: z.array(
     z.object({
-      text: z.string().describe('Possible action for the player.'),
-      correct: z.boolean().describe('Whether the action is correct for the described situation.'),
+      text: z.string().describe('Posible acción para el jugador.'),
+      correct: z.boolean().describe('Si la acción es correcta para la situación descrita.'),
     })
-  ).describe('An array of possible actions and whether they are correct for the situation.'),
+  ).describe('Un array de posibles acciones y si son correctas para la situación.'),
 });
 export type GenerateVolleyballSituationOutput = z.infer<typeof GenerateVolleyballSituationOutputSchema>;
 
@@ -39,15 +39,16 @@ const generateVolleyballSituationPrompt = ai.definePrompt({
   output: {
     schema: GenerateVolleyballSituationOutputSchema,
   },
-  prompt: `You are a volleyball coach creating game situations for players to practice their decision-making.
+  prompt: `Eres un entrenador de voleibol que crea situaciones de juego para que los jugadores practiquen su toma de decisiones.
 
-Generate a challenging volleyball situation of the following type: {{{situationType}}}.
+Genera una situación de voleibol desafiante del siguiente tipo: {{{situationType}}}.
 
-The situation should include a description of the player positions, ball position, and opposing team arrangement.
-Provide 3 possible actions for the player. One of the actions must be the optimal action for the described situation.
+La situación debe incluir una descripción de las posiciones de los jugadores, la posición de la pelota y la disposición del equipo contrario.
+Proporciona 3 posibles acciones para el jugador. Una de las acciones debe ser la acción óptima para la situación descrita.
+Utiliza términos y expresiones comunes en el voleibol latinoamericano.
 
-Description:
-Options:`,
+Descripción:
+Opciones:`,
 });
 
 const generateVolleyballSituationFlow = ai.defineFlow<
@@ -64,3 +65,4 @@ const generateVolleyballSituationFlow = ai.defineFlow<
     return output!;
   }
 );
+

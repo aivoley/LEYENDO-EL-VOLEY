@@ -11,13 +11,13 @@ import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
 
 const ProvideTacticalFeedbackInputSchema = z.object({
-  gameSituation: z.string().describe('Description of the game situation, including player positions, ball position, and opposing team arrangement.'),
-  chosenAction: z.string().describe('The action chosen by the player (e.g., attack, block, pass).'),
+  gameSituation: z.string().describe('Descripción de la situación del juego, incluyendo las posiciones de los jugadores, la posición de la pelota y la disposición del equipo contrario.'),
+  chosenAction: z.string().describe('La acción elegida por el jugador (ej., ataque, bloqueo, pase).'),
 });
 export type ProvideTacticalFeedbackInput = z.infer<typeof ProvideTacticalFeedbackInputSchema>;
 
 const ProvideTacticalFeedbackOutputSchema = z.object({
-  feedback: z.string().describe('Tactical feedback on the chosen action, considering the game situation.'),
+  feedback: z.string().describe('Feedback táctico sobre la acción elegida, considerando la situación del juego.'),
 });
 export type ProvideTacticalFeedbackOutput = z.infer<typeof ProvideTacticalFeedbackOutputSchema>;
 
@@ -33,12 +33,13 @@ const provideTacticalFeedbackPrompt = ai.definePrompt({
   output: {
     schema: ProvideTacticalFeedbackOutputSchema,
   },
-  prompt: `You are a volleyball coach providing tactical feedback to a player.
+  prompt: `Eres un entrenador de voleibol que proporciona feedback táctico a un jugador.
 
-Given the following game situation and the player's chosen action, provide tactical feedback on the decision.
+Dada la siguiente situación de juego y la acción elegida por el jugador, proporciona feedback táctico sobre la decisión.
+Utiliza términos y expresiones comunes en el voleibol latinoamericano.
 
-Game Situation: {{{gameSituation}}}
-Chosen Action: {{{chosenAction}}}
+Situación de Juego: {{{gameSituation}}}
+Acción Elegida: {{{chosenAction}}}
 
 Feedback:
 `,
@@ -58,3 +59,4 @@ const provideTacticalFeedbackFlow = ai.defineFlow<
     return output!;
   }
 );
+
