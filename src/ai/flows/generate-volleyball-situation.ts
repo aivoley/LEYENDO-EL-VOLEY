@@ -11,18 +11,33 @@
 import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
 
+<<<<<<< HEAD
 const SituationType = z.enum(['ofensiva', 'defensiva']);
 
 const GenerateVolleyballSituationInputSchema = z.object({
   situationType: SituationType.describe('El tipo de situación de voleibol a generar (ofensiva o defensiva).'),
   questionCount: z.number().min(3).max(20).default(4).describe('El número de preguntas a generar.'),
+=======
+const GenerateVolleyballSituationInputSchema = z.object({
+  situationType: z.enum(['ofensiva', 'defensiva']).describe('The type of volleyball situation to generate (ofensiva or defensiva).'),
+>>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
 });
 export type GenerateVolleyballSituationInput = z.infer<typeof GenerateVolleyballSituationInputSchema>;
 
 const GenerateVolleyballSituationOutputSchema = z.object({
+<<<<<<< HEAD
   description: z.string().describe('Una descripción de la situación del juego de voleibol.'),
   correctOption: z.string().describe('La acción correcta para la situación descrita.'),
   incorrectOptions: z.array(z.string()).describe('Un array de acciones incorrectas para la situación.'),
+=======
+  description: z.string().describe('A description of the volleyball game situation.'),
+  options: z.array(
+    z.object({
+      text: z.string().describe('Possible action for the player.'),
+      correct: z.boolean().describe('Whether the action is correct for the described situation.'),
+    })
+  ).describe('An array of possible actions and whether they are correct for the situation.'),
+>>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
 });
 export type GenerateVolleyballSituationOutput = z.infer<typeof GenerateVolleyballSituationOutputSchema>;
 
@@ -38,6 +53,7 @@ const generateVolleyballSituationPrompt = ai.definePrompt({
   output: {
     schema: GenerateVolleyballSituationOutputSchema,
   },
+<<<<<<< HEAD
   prompt: `Sos una entrenadora de voley argentina que crea situaciones de juego desafiantes para que las jugadoras practiquen su toma de decisiones.
 
 Generá una situación de voley del siguiente tipo: {{{situationType}}}.
@@ -57,6 +73,17 @@ Formato de salida:
 \`\`\`
 
 Respuesta:`,
+=======
+  prompt: `You are a volleyball coach creating game situations for players to practice their decision-making.
+
+Generate a challenging volleyball situation of the following type: {{{situationType}}}.
+
+The situation should include a description of the player positions, ball position, and opposing team arrangement.
+Provide 3 possible actions for the player. One of the actions must be the optimal action for the described situation.
+
+Description:
+Options:`,
+>>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
 });
 
 const generateVolleyballSituationFlow = ai.defineFlow<
