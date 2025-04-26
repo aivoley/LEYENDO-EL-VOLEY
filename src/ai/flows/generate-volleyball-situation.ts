@@ -19,25 +19,37 @@ const GenerateVolleyballSituationInputSchema = z.object({
   questionCount: z.number().min(3).max(20).default(4).describe('El número de preguntas a generar.'),
 =======
 const GenerateVolleyballSituationInputSchema = z.object({
+<<<<<<< HEAD
   situationType: z.enum(['ofensiva', 'defensiva']).describe('The type of volleyball situation to generate (ofensiva or defensiva).'),
 >>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
+=======
+  situationType: z.enum(['ofensiva', 'defensiva']).describe('El tipo de situación de voleibol a generar (ofensiva o defensiva).'),
+>>>>>>> 35eb4d3 (en español latinoamericano por favor)
 });
 export type GenerateVolleyballSituationInput = z.infer<typeof GenerateVolleyballSituationInputSchema>;
 
 const GenerateVolleyballSituationOutputSchema = z.object({
+<<<<<<< HEAD
 <<<<<<< HEAD
   description: z.string().describe('Una descripción de la situación del juego de voleibol.'),
   correctOption: z.string().describe('La acción correcta para la situación descrita.'),
   incorrectOptions: z.array(z.string()).describe('Un array de acciones incorrectas para la situación.'),
 =======
   description: z.string().describe('A description of the volleyball game situation.'),
+=======
+  description: z.string().describe('Una descripción de la situación del juego de voleibol.'),
+>>>>>>> 35eb4d3 (en español latinoamericano por favor)
   options: z.array(
     z.object({
-      text: z.string().describe('Possible action for the player.'),
-      correct: z.boolean().describe('Whether the action is correct for the described situation.'),
+      text: z.string().describe('Posible acción para el jugador.'),
+      correct: z.boolean().describe('Si la acción es correcta para la situación descrita.'),
     })
+<<<<<<< HEAD
   ).describe('An array of possible actions and whether they are correct for the situation.'),
 >>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
+=======
+  ).describe('Un array de posibles acciones y si son correctas para la situación.'),
+>>>>>>> 35eb4d3 (en español latinoamericano por favor)
 });
 export type GenerateVolleyballSituationOutput = z.infer<typeof GenerateVolleyballSituationOutputSchema>;
 
@@ -53,6 +65,7 @@ const generateVolleyballSituationPrompt = ai.definePrompt({
   output: {
     schema: GenerateVolleyballSituationOutputSchema,
   },
+<<<<<<< HEAD
 <<<<<<< HEAD
   prompt: `Sos una entrenadora de voley argentina que crea situaciones de juego desafiantes para que las jugadoras practiquen su toma de decisiones.
 
@@ -75,15 +88,24 @@ Formato de salida:
 Respuesta:`,
 =======
   prompt: `You are a volleyball coach creating game situations for players to practice their decision-making.
+=======
+  prompt: `Eres un entrenador de voleibol que crea situaciones de juego para que los jugadores practiquen su toma de decisiones.
+>>>>>>> 35eb4d3 (en español latinoamericano por favor)
 
-Generate a challenging volleyball situation of the following type: {{{situationType}}}.
+Genera una situación de voleibol desafiante del siguiente tipo: {{{situationType}}}.
 
-The situation should include a description of the player positions, ball position, and opposing team arrangement.
-Provide 3 possible actions for the player. One of the actions must be the optimal action for the described situation.
+La situación debe incluir una descripción de las posiciones de los jugadores, la posición de la pelota y la disposición del equipo contrario.
+Proporciona 3 posibles acciones para el jugador. Una de las acciones debe ser la acción óptima para la situación descrita.
+Utiliza términos y expresiones comunes en el voleibol latinoamericano.
 
+<<<<<<< HEAD
 Description:
 Options:`,
 >>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
+=======
+Descripción:
+Opciones:`,
+>>>>>>> 35eb4d3 (en español latinoamericano por favor)
 });
 
 const generateVolleyballSituationFlow = ai.defineFlow<
@@ -100,3 +122,4 @@ const generateVolleyballSituationFlow = ai.defineFlow<
     return output!;
   }
 );
+

@@ -173,16 +173,16 @@ const GameSimulation = () => {
       setFeedback("¡Correcto!");
       setCorrectCount(correctCount + 1);
       toast({
-        title: 'Correct!',
-        description: 'Nice one.',
+        title: '¡Correcto!',
+        description: '¡Bien hecho!',
       });
     } else {
       setFeedback("Incorrecto. ¡Intenta de nuevo!");
       setIncorrectCount(incorrectCount + 1);
       toast({
         variant: "destructive",
-        title: "Bummer",
-        description: "Try again."
+        title: "¡Lástima!",
+        description: "Intenta de nuevo."
       });
     }
 
@@ -237,3 +237,4 @@ const GameSimulation = () => {
 };
 
 export default GameSimulation;
+
