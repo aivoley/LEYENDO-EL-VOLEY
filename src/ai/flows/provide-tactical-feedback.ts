@@ -13,6 +13,7 @@ import {z} from 'genkit';
 const ProvideTacticalFeedbackInputSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   gameSituation: z.string().describe('Descripción de la situación del juego, incluyendo las posiciones de las jugadoras, la posición de la pelota y la disposición del equipo contrario.'),
   chosenAction: z.string().describe('La acción elegida por la jugadora (ej., ataque, bloqueo, pase).'),
 =======
@@ -23,6 +24,10 @@ const ProvideTacticalFeedbackInputSchema = z.object({
   gameSituation: z.string().describe('Descripción de la situación del juego, incluyendo las posiciones de los jugadores, la posición de la pelota y la disposición del equipo contrario.'),
   chosenAction: z.string().describe('La acción elegida por el jugador (ej., ataque, bloqueo, pase).'),
 >>>>>>> 35eb4d3 (en español latinoamericano por favor)
+=======
+  gameSituation: z.string().describe('Descripción de la situación del juego, incluyendo las posiciones de las jugadoras, la posición de la pelota y la disposición del equipo contrario.'),
+  chosenAction: z.string().describe('La acción elegida por la jugadora (ej., ataque, bloqueo, pase).'),
+>>>>>>> e8f2cae (cambiar el lenguaje a voley femenino)
 });
 export type ProvideTacticalFeedbackInput = z.infer<typeof ProvideTacticalFeedbackInputSchema>;
 
@@ -53,6 +58,9 @@ const provideTacticalFeedbackPrompt = ai.definePrompt({
   },
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e8f2cae (cambiar el lenguaje a voley femenino)
   prompt: `Sos una entrenadora de voleibol que proporciona feedback táctico a una jugadora.
 
 Dada la siguiente situación de juego y la acción elegida por la jugadora, proporciona feedback táctico sobre la decisión.
@@ -96,4 +104,3 @@ const provideTacticalFeedbackFlow = ai.defineFlow<
     return output!;
   }
 );
-

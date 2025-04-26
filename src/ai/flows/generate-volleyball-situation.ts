@@ -83,6 +83,7 @@ const generateVolleyballSituationPrompt = ai.definePrompt({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   prompt: `Sos una entrenadora de voley argentina que crea situaciones de juego desafiantes para que las jugadoras practiquen su toma de decisiones.
 
 Generá una situación de voley del siguiente tipo: {{{situationType}}}.
@@ -95,6 +96,13 @@ Generá una situación de voley del siguiente tipo: {{{situationType}}}.
 
 La situación debe incluir una descripción clara y concisa de las posiciones de los jugadores, la ubicación de la pelota y la disposición del equipo contrario, permitiendo al jugador tomar una decisión informada.
 >>>>>>> de1dead (ojo que hay muchas respuestas para una pregunta)
+=======
+  prompt: `Sos una entrenadora de voley argentina que crea situaciones de juego desafiantes para que las jugadoras practiquen su toma de decisiones.
+
+Generá una situación de voley del siguiente tipo: {{{situationType}}}.
+
+La situación debe incluir una descripción clara y concisa de las posiciones de las jugadoras, la ubicación de la pelota y la disposición del equipo contrario, permitiendo a la jugadora tomar una decisión informada.
+>>>>>>> e8f2cae (cambiar el lenguaje a voley femenino)
 Proporcioná una única acción correcta y {{{questionCount}}} acciones incorrectas para la situación.
 Usá términos y expresiones comunes en el voley argentino, evitando la repetición en las opciones incorrectas y asegurando que sean creíbles y lógicas dentro del contexto del juego.
 Asegurate de que solo haya una opcion correcta.
