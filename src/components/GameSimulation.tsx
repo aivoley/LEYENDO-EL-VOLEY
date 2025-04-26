@@ -143,15 +143,16 @@ import React, { useState, useEffect } from 'react';
 >>>>>>> e1f6941 (pueden ser 20 preguntas y que sean diferentes cada vez, generadas por IA?)
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { analyzeVolleyballIQ } from "@/services/volleyball-iq";
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { provideTacticalFeedback } from "@/ai/flows/provide-tactical-feedback";
-import { generateVolleyballSituation } from "@/ai/flows/generate-volleyball-situation";
+import { generateVolleyballSituation, GenerateVolleyballSituationOutput } from "@/ai/flows/generate-volleyball-situation";
 
 const GameSimulation = () => {
-  const [situation, setSituation] = useState<any>(null);
+  const [situation, setSituation] = useState<GenerateVolleyballSituationOutput | null>(null);
+  const [options, setOptions] = useState<string[]>([]);
+  const [correctOption, setCorrectOption] = useState<string>("");
   const [feedback, setFeedback] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
@@ -164,30 +165,36 @@ const GameSimulation = () => {
   }, []);
 
   const generateNewSituation = async () => {
-    const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva" });
+    const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva", questionCount: 3 });
+
     setSituation(newSituation);
+    if (newSituation) {
+      const allOptions = [newSituation.correctOption, ...newSituation.incorrectOptions].sort(() => Math.random() - 0.5);
+      setOptions(allOptions);
+      setCorrectOption(newSituation.correctOption);
+    }
   };
 
-  const handleOptionSelect = async (option: { text: string; correct: boolean }) => {
-    if (option.correct) {
-      setFeedback("¡Correcto!");
+  const handleOptionSelect = async (option: string) => {
+    if (option === correctOption) {
+      setFeedback("¡Correcto, che!");
       setCorrectCount(correctCount + 1);
       toast({
-        title: '¡Correcto!',
-        description: '¡Bien hecho!',
+        title: '¡Correcto, che!',
+        description: '¡Bien ahí!',
       });
     } else {
-      setFeedback("Incorrecto. ¡Intenta de nuevo!");
+      setFeedback("¡Incorrecto, loco! ¡Intenta de nuevo!");
       setIncorrectCount(incorrectCount + 1);
       toast({
         variant: "destructive",
-        title: "¡Lástima!",
-        description: "Intenta de nuevo."
+        title: "¡Lástima, che!",
+        description: "¡Dale, intenta de nuevo, vos podés!"
       });
     }
 
     if (situation) {
-      const tacticalFeedback = await provideTacticalFeedback({ gameSituation: situation.description, chosenAction: option.text });
+      const tacticalFeedback = await provideTacticalFeedback({ gameSituation: situation.description, chosenAction: option });
       setFeedback(tacticalFeedback.feedback);
     }
     router.refresh();
@@ -205,13 +212,17 @@ const GameSimulation = () => {
   return (
     <Card className="w-[800px] bg-secondary">
       <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-2 text-primary">Situación: {situation.situationType}</h2>
+        <h2 className="text-xl font-semibold mb-2 text-primary">Situación: {situation.description}</h2>
         <p className="mb-4">{situation.description}</p>
         <div className="mb-4">
-          {situation.options.map((option, index) => (
+          {options.map((option, index) => (
             <Button key={index} variant="outline" className="mr-2" onClick={() => handleOptionSelect(option)}>
+<<<<<<< HEAD
               {option.text}
 >>>>>>> 3fe51ad (Update app)
+=======
+              {option}
+>>>>>>> 41d68e4 (depura el front y en español argentino)
             </Button>
           ))}
         </div>
@@ -237,4 +248,3 @@ const GameSimulation = () => {
 };
 
 export default GameSimulation;
-
