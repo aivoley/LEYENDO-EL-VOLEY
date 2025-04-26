@@ -165,7 +165,7 @@ const GameSimulation = () => {
   }, []);
 
   const generateNewSituation = async () => {
-    const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva", questionCount: 3 });
+    const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva", questionCount: 20 });
 
     setSituation(newSituation);
     if (newSituation) {
@@ -176,7 +176,8 @@ const GameSimulation = () => {
   };
 
   const handleOptionSelect = async (option: string) => {
-    if (option === correctOption) {
+    let isCorrect = option === correctOption;
+    if (isCorrect) {
       setFeedback("¡Correcto, che!");
       setCorrectCount(correctCount + 1);
       toast({
@@ -212,7 +213,7 @@ const GameSimulation = () => {
   return (
     <Card className="w-[800px] bg-secondary">
       <CardContent className="p-4">
-        <h2 className="text-xl font-semibold mb-2 text-primary">Situación: {situation.description}</h2>
+        <h2 className="text-xl font-semibold mb-2 text-primary">Situación:</h2>
         <p className="mb-4">{situation.description}</p>
         <div className="mb-4">
           {options.map((option, index) => (
