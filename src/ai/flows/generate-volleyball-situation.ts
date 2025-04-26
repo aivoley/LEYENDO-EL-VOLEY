@@ -20,6 +20,7 @@ const SituationType = z.enum(['ofensiva', 'defensiva']);
 const GenerateVolleyballSituationInputSchema = z.object({
   situationType: SituationType.describe('El tipo de situación de voleibol a generar (ofensiva o defensiva).'),
 <<<<<<< HEAD
+<<<<<<< HEAD
   questionCount: z.number().min(3).max(20).default(4).describe('El número de preguntas a generar.'),
 =======
 const GenerateVolleyballSituationInputSchema = z.object({
@@ -32,6 +33,9 @@ const GenerateVolleyballSituationInputSchema = z.object({
 =======
   questionCount: z.number().min(1).max(20).default(3).describe('El número de preguntas a generar.'),
 >>>>>>> 41d68e4 (depura el front y en español argentino)
+=======
+  questionCount: z.number().min(3).max(20).default(4).describe('El número de preguntas a generar.'),
+>>>>>>> de1dead (ojo que hay muchas respuestas para una pregunta)
 });
 export type GenerateVolleyballSituationInput = z.infer<typeof GenerateVolleyballSituationInputSchema>;
 
@@ -78,11 +82,19 @@ const generateVolleyballSituationPrompt = ai.definePrompt({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   prompt: `Sos una entrenadora de voley argentina que crea situaciones de juego desafiantes para que las jugadoras practiquen su toma de decisiones.
 
 Generá una situación de voley del siguiente tipo: {{{situationType}}}.
 
 La situación debe incluir una descripción clara y concisa de las posiciones de las jugadoras, la ubicación de la pelota y la disposición del equipo contrario, permitiendo a la jugadora tomar una decisión informada.
+=======
+  prompt: `Sos un entrenador de voley argentino que crea situaciones de juego desafiantes para que los jugadores practiquen su toma de decisiones.
+
+Generá una situación de voley del siguiente tipo: {{{situationType}}}.
+
+La situación debe incluir una descripción clara y concisa de las posiciones de los jugadores, la ubicación de la pelota y la disposición del equipo contrario, permitiendo al jugador tomar una decisión informada.
+>>>>>>> de1dead (ojo que hay muchas respuestas para una pregunta)
 Proporcioná una única acción correcta y {{{questionCount}}} acciones incorrectas para la situación.
 Usá términos y expresiones comunes en el voley argentino, evitando la repetición en las opciones incorrectas y asegurando que sean creíbles y lógicas dentro del contexto del juego.
 Asegurate de que solo haya una opcion correcta.
