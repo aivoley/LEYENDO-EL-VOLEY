@@ -15,14 +15,20 @@ const GameSimulation = () => {
   const [feedback, setFeedback] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
+  const [questionNumber, setQuestionNumber] = useState(1); // Contador de preguntas
   const [isLoading, setIsLoading] = useState(true);
+  const totalQuestions = 20; // Total de preguntas
   const router = useRouter();
   const { toast } = useToast();
 
   const generateNewSituation = useCallback(async () => {
     setIsLoading(true);
     try {
-      const newSituation = await generateVolleyballSituation({ situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva" });
+      const newSituation = await generateVolleyballSituation({
+        situationType: Math.random() > 0.5 ? "ofensiva" : "defensiva",
+        questionCount: 4, // Asegurarse de que siempre haya 4 opciones
+      });
+
       setSituation(newSituation);
       if (newSituation) {
         const allOptions = [newSituation.correctOption, ...newSituation.incorrectOptions].sort(() => Math.random() - 0.5);
@@ -32,7 +38,7 @@ const GameSimulation = () => {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "¡Error!",
         description: "¡Ups! Parece que hubo un problema al generar la situación. Intenta de nuevo más tarde."
       });
     } finally {
@@ -74,8 +80,23 @@ const GameSimulation = () => {
   };
 
   const handleNextSituation = () => {
-    generateNewSituation();
-    setFeedback("");
+    if (questionNumber < totalQuestions) {
+      setQuestionNumber(prevNumber => prevNumber + 1);
+      generateNewSituation();
+      setFeedback("");
+    } else {
+      // Manejar el final de las preguntas (ej., mostrar un resumen o reiniciar)
+      toast({
+        title: "¡Juego terminado!",
+        description: `Completaste las ${totalQuestions} preguntas. ¡Gracias por jugar!`,
+      });
+      // Opcional: reiniciar el juego
+      setQuestionNumber(1);
+      setCorrectCount(0);
+      setIncorrectCount(0);
+      generateNewSituation();
+      setFeedback("");
+    }
   };
 
   if (isLoading) {
@@ -103,6 +124,7 @@ const GameSimulation = () => {
           <p className="text-sm">Correctas: {correctCount}</p>
           <p className="text-sm">Incorrectas: {incorrectCount}</p>
         </div>
+         <p className="text-sm">Pregunta {questionNumber} de {totalQuestions}</p> {/* Contador de preguntas */}
         <Button onClick={handleNextSituation} className="mt-4">Siguiente Jugada</Button>
       </CardContent>
     </Card>
